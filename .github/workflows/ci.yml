@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        node-version: [20, 22]
+        os: [ubuntu-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Unit tests
+        run: npm test
+
+      - name: CLI smoke test
+        run: |
+          node src/cli.js --vault "${{ runner.temp }}/vault" init
+          node src/cli.js --vault "${{ runner.temp }}/vault" new "Zadacha A" "nginx proksi kesh" --tags infra
+          node src/cli.js --vault "${{ runner.temp }}/vault" new "Zadacha B" "redis replication" --tags infra
+          node src/cli.js --vault "${{ runner.temp }}/vault" search nginx
+          node src/cli.js --vault "${{ runner.temp }}/vault" search "nginx kesh" --json
+          node src/cli.js --vault "${{ runner.temp }}/vault" list --json
+          node src/cli.js --vault "${{ runner.temp }}/vault" tags
+          node src/cli.js --vault "${{ runner.temp }}/vault" stats --json
+          node src/cli.js --vault "${{ runner.temp }}/vault" reindex

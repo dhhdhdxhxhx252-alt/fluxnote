@@ -1,0 +1,30 @@
+{
+  "name": "fluxnote",
+  "version": "1.0.0",
+  "description": "Local-first markdown journal with a hand-rolled BM25 search index. Zero dependencies.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "fluxnote": "src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "notes",
+    "journal",
+    "markdown",
+    "full-text-search",
+    "bm25",
+    "local-first",
+    "cli"
+  ]
+}
